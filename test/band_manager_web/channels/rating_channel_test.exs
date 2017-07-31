@@ -2,6 +2,7 @@ defmodule BandManagerWeb.RatingChannelTest do
   use BandManagerWeb.ChannelCase
 
   alias BandManagerWeb.RatingChannel
+  alias BandManager.Artists
 
   setup do
     {:ok, _, socket} =
@@ -11,18 +12,11 @@ defmodule BandManagerWeb.RatingChannelTest do
     {:ok, socket: socket}
   end
 
-  test "ping replies with status ok", %{socket: socket} do
-    ref = push socket, "ping", %{"hello" => "there"}
-    assert_reply ref, :ok, %{"hello" => "there"}
-  end
+  test "rating:add sends broadcast to rating:band_id", %{socket: socket} do
+    {:ok, song} = Artists.create_song(%{name: "Test Song"})
+    song_id = song.id
 
-  test "shout broadcasts to rating:lobby", %{socket: socket} do
-    push socket, "shout", %{"hello" => "all"}
-    assert_broadcast "shout", %{"hello" => "all"}
-  end
-
-  test "broadcasts are pushed to the client", %{socket: socket} do
-    broadcast_from! socket, "broadcast", %{"some" => "data"}
-    assert_push "broadcast", %{"some" => "data"}
+    push socket, "rating:add", %{"song" => song_id, "rating" => 3}
+    assert_broadcast "rating:changed", %{song: ^song_id, rating: 3.0}
   end
 end

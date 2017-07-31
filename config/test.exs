@@ -12,8 +12,6 @@ config :logger, level: :warn
 # Configure your database
 config :band_manager, BandManager.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
   database: "band_manager_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
