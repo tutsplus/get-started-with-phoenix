@@ -12,7 +12,7 @@
 
 <div class="list-group">
   <%= for band <- @bands do %>
-    <%= link to: band_path(@conn, :show, band.name), class: "list-group-item" do %>
+    <%= link to: band_path(@conn, :show, band.id), class: "list-group-item" do %>
       <strong><%= band.name %></strong>
       <span class="pull-right"><%= band.genre %></span>
     <% end %>

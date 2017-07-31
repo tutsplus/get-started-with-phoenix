@@ -1,5 +1,7 @@
 <h2><%= @band.name %></h2>
 
-<%= for album <- albums(@band) do %>
+<p><%= @band.description %></p>
+
+<%= for album <- @band.albums do %>
   <%= render "_album.html", album: album %>
 <% end %>
