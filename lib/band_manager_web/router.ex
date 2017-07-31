@@ -16,11 +16,17 @@ defmodule BandManagerWeb.Router do
   scope "/", BandManagerWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    resources "/", BandController do
+      resources "/albums", AlbumController do
+        resources "/songs", SongController, only: [:create, :update, :delete]
+      end
+    end
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", BandManagerWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", BandManagerWeb.Api, as: :api do
+    pipe_through :api
+
+    resources "/bands", BandController, except: [:new, :edit]
+  end
 end
