@@ -19,5 +19,6 @@ defmodule BandManager.Artists.Song do
     song
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |> put_assoc(:album, attrs["album"])
   end
 end

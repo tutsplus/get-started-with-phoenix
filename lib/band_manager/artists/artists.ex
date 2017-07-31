@@ -53,6 +53,31 @@ defmodule BandManager.Artists do
     |> Repo.insert()
   end
 
+  def create_album_with_songs(band, attrs \\ %{}) do
+    album_changeset = Album.changeset(%Album{}, Map.put(attrs, "band", band))
+
+    multi = Ecto.Multi.new
+    |> Ecto.Multi.insert(:album, album_changeset)
+    |> Ecto.Multi.run(:songs, fn(%{album: album}) ->
+      results = attrs["song_names"]
+      |> String.split("\n")
+      |> Enum.map(fn(song) ->
+        create_song(%{"name" => song, "album" => album})
+      end)
+
+      {:ok, results}
+    end)
+
+    case Repo.transaction(multi) do
+      {:ok, result} ->
+        {:ok, {result.album, result.songs}}
+      {:error, :album, album_changeset, _changes_so_far} ->
+        {:error, :album, album_changeset}
+      {:error, :songs, _, _} ->
+        {:error, :songs}
+    end
+  end
+
   def update_album(%Album{} = album, attrs) do
     album
     |> Album.changeset(attrs)
@@ -65,5 +90,14 @@ defmodule BandManager.Artists do
 
   def change_album(%Album{} = album) do
     Album.changeset(album, %{})
+  end
+
+
+  alias BandManager.Artists.Song
+
+  def create_song(attrs \\ %{}) do
+    %Song{}
+    |> Song.changeset(attrs)
+    |> Repo.insert()
   end
 end

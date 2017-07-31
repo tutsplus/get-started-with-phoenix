@@ -20,6 +20,6 @@ defmodule BandManager.Artists.Band do
   def changeset(%Band{} = band, attrs) do
     band
     |> cast(attrs, [:name, :genre, :description])
-    |> validate_required([:name, :genre, :description])
+    |> validate_required([:name, :genre])
   end
 end

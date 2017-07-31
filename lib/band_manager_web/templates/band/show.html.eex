@@ -1,6 +1,15 @@
-<h2><%= @band.name %></h2>
+<h2>
+  <%= @band.name %>
+  <div class="pull-right">
+    <%= link "Edit Band", to: band_path(@conn, :edit, @band), class: "btn btn-sm btn-warning" %>
+  </div>
+</h2>
 
 <p><%= @band.description %></p>
+
+<p class="text-right">
+  <%= link "Add New Album", to: band_album_path(@conn, :new, @band), class: "btn btn-primary" %>
+</p>
 
 <%= for album <- @band.albums do %>
   <%= render "_album.html", album: album %>

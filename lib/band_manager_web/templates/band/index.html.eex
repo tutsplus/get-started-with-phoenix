@@ -6,7 +6,7 @@
   </div>
 </form>
 
-<% if get_flash(@conn, :search) do %>
+<%= if get_flash(@conn, :search) do %>
   <p><%= get_flash(@conn, :search) %></p>
 <% end %>
 

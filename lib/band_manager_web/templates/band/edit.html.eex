@@ -1,0 +1,31 @@
+<h2>Edit <%= @band.name %></h2>
+
+<%= form_for @changeset, band_path(@conn, :update, @band), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Some errors prohibited the record from being saved. Check below for details.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :name, class: "control-label" %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :genre, class: "control-label" %>
+    <%= text_input f, :genre, class: "form-control" %>
+    <%= error_tag f, :genre %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :description, class: "control-label" %>
+    <%= textarea f, :description, class: "form-control", rows: 5 %>
+    <%= error_tag f, :description %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Update Band", class: "btn btn-primary" %>
+  </div>
+<% end %>

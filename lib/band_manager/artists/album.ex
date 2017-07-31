@@ -21,5 +21,6 @@ defmodule BandManager.Artists.Album do
     album
     |> cast(attrs, [:name, :year])
     |> validate_required([:name, :year])
+    |> put_assoc(:band, attrs["band"])
   end
 end
