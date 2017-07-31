@@ -2,7 +2,7 @@ defmodule BandManagerWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", BandManagerWeb.RoomChannel
+  channel "rating:*", BandManagerWeb.RatingChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

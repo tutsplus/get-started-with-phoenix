@@ -95,9 +95,22 @@ defmodule BandManager.Artists do
 
   alias BandManager.Artists.Song
 
+  def get_song!(id), do: Repo.get!(Song, id)
+
   def create_song(attrs \\ %{}) do
     %Song{}
     |> Song.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def average_song_rating(song) do
+    average = song
+    |> Ecto.assoc(:ratings)
+    |> Repo.aggregate(:avg, :value)
+
+    case average do
+      nil -> 2.5
+      avg -> Decimal.to_float(avg)
+    end
   end
 end

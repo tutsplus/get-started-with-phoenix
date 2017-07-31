@@ -1,21 +1,31 @@
-// Brunch automatically concatenates all files in your
-// watched paths. Those paths can be configured at
-// config.paths.watched in "brunch-config.js".
-//
-// However, those files will only be executed if
-// explicitly imported. The only exception are files
-// in vendor, which are never wrapped in imports and
-// therefore are always executed.
+import "phoenix_html";
+import socket from "./socket";
 
-// Import dependencies
-//
-// If you no longer want to use a dependency, remember
-// to also remove its path from "config.paths.watched".
-import "phoenix_html"
+let BandRegex = /^\/([0-9a-f-]{36})$/i;
+let path = document.location.pathname;
+let match = path.match(BandRegex);
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
+if (match) {
+  let band_id = match[1];
+  let channel = socket.channel("rating:" + band_id, {});
 
-// import socket from "./socket"
+  channel.on("rating:changed", (response) => {
+    for (var i = 1; i <= 5; i++) {
+      let ratingStar = $('#rating-' + response.song + '-' + i);
+
+      ratingStar.removeClass('glyphicon-star glyphicon-star-empty');
+      ratingStar.addClass('glyphicon-star' + (Math.round(response.rating) < i ? '-empty' : ''));
+    }
+  });
+
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) });
+
+  $('.rating-star').on('click', function () {
+    let el = $(this);
+
+    channel.push('rating:add', { song: el.data('song'), rating: el.data('rating') });
+    el.parent().addClass('rated');
+  })
+}

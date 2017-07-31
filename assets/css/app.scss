@@ -15,3 +15,22 @@ $icon-font-path: "/fonts/";
     }
   }
 }
+
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+
+.rating.rated .rating-star {
+  color: $brand-primary;
+}
+
+.rating:hover .rating-star {
+  @extend .glyphicon-star-empty;
+}
+
+.rating:hover > .rating-star:hover,
+.rating:hover > .rating-star:hover ~ .rating-star {
+  @extend .glyphicon-star;
+  color: $brand-primary;
+}
