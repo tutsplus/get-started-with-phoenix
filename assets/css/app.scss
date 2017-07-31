@@ -1,0 +1,17 @@
+$icon-font-path: "/fonts/";
+@import "bootstrap";
+
+.album {
+  .panel-heading {
+    font-size: 18px;
+    font-weight: bold;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .album-year {
+      color: lighten(#000, 50%);
+    }
+  }
+}

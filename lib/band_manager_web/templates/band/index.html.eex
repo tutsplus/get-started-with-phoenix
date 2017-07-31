@@ -1,5 +1,15 @@
 <h2>Bands</h2>
 
+<form action="<%= band_path(@conn, :index) %>" method="GET" class="form">
+  <div class="form-group">
+    <input type="text" class="form-control" name="query" placeholder="Search for band or genre...">
+  </div>
+</form>
+
+<% if get_flash(@conn, :search) do %>
+  <p><%= get_flash(@conn, :search) %></p>
+<% end %>
+
 <div class="list-group">
   <%= for band <- @bands do %>
     <%= link to: band_path(@conn, :show, band.name), class: "list-group-item" do %>

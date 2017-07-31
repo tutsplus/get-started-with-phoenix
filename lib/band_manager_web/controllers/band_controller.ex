@@ -29,7 +29,9 @@ defmodule BandManagerWeb.BandController do
       b.name =~ search || b.genre =~ search
     end
 
-    render conn, "index.html", bands: bands
+    conn
+    |> put_flash(:search, "Found #{Enum.count(bands)} band(s) matching your search.")
+    |> render "index.html", bands: bands
   end
 
   def index(conn, _params) do
