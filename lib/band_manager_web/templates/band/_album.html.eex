@@ -1,0 +1,16 @@
+<div class="album panel panel-default">
+  <div class="panel-heading">
+    <span class="album-name"><%= @album.name %></span>
+    <span class="album-year"><%= @album.year %></span>
+  </div>
+  <ul class="list-group songs">
+    <%= for song <- @album.songs do %>
+      <li class="list-group-item">
+        <%= song.name %>
+        <span class="pull-right rating">
+          <%= rating(song) %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</div>
